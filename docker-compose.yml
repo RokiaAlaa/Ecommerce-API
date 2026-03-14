@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: ecommerce-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:      
+      - DATABASE_HOSTNAME=db
+      - REDIS_HOSTNAME=redis
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    # command: ["/bin/sh", "-c", "/opt/venv/bin/alembic upgrade head && /opt/venv/bin/gunicorn app.main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000"]
+    command: ["/bin/sh", "-c", "/opt/venv/bin/alembic upgrade head && /opt/venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000"]
+    volumes:
+      - .:/app
+    networks:
+      - ecommerce-network
+    restart: unless-stopped
+
+  db:
+    image: postgres:15-alpine
+    container_name: ecommerce_db
+    environment:
+      - POSTGRES_USER=${DATABASE_USERNAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - ecommerce-network
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: ecommerce_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - ecommerce-network
+    restart: unless-stopped
+
+volumes:
+    postgres_data:
+    redis_data:
+
+networks:
+    ecommerce-network:
+      driver: bridge 
