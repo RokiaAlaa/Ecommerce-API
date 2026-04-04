@@ -214,6 +214,25 @@ APP_NAME=E-commerce API
 DEBUG=False
 ```
 
+## 🎨 Frontend
+
+A modern e-commerce frontend built with Next.js and Tailwind CSS.
+
+### Tech Stack
+- Next.js 15
+- Tailwind CSS
+- Axios
+- React Hot Toast
+
+### Run Frontend
+```bash
+cd ecommerce-frontend
+npm install
+npm run dev
+````
+
+Frontend will be available at `http://localhost:3000`
+
 ## 🚀 Deployment
 
 ### Railway
