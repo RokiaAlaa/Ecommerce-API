@@ -1,7 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import TYPE_CHECKING, Optional
 from datetime import datetime
-# from app.schemas.category import Category
 
 if TYPE_CHECKING:
     from app.schemas.category import Category

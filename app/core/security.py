@@ -50,8 +50,3 @@ async def verify_access_token(token: str, credentials_exception):
         raise credentials_exception
     
     return token_data
-
-# import secrets
-
-# secret_key = secrets.token_hex(32)
-# print(secret_key)

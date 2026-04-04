@@ -1,5 +1,6 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+
 class Settings(BaseSettings):
     database_hostname: str
     database_port: str
@@ -16,11 +17,11 @@ class Settings(BaseSettings):
     algorithm: str
     access_token_expire_minutes: int
 
-    app_name : str = "E-commerce API"
+    app_name: str = "E-commerce API"
     debug: bool = False
     api_v1_prefix: str = "/api/v1"
 
+    model_config = SettingsConfigDict(env_file=".env")
 
-    model_config = SettingsConfigDict(env_file = '.env')
 
 settings = Settings()
